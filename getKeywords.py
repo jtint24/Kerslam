@@ -1,6 +1,17 @@
-import math
-import AssociationMap
-import getAssociationMap
+import math #to use logarithms
+import AssociationMap #to use the associationMap class
+import getAssociationMap #to use the punctuation cleaning funciton
+
+"""
+getKeywords
+
+gets a complete list of non-trivial tokens and n-grams from a text, ranked by how likely they are to be keywords
+
+:param text: the text to grab keywords from
+:type text: string
+:returns: a list of possible keywords ranked by how likely they are to be significant keywords
+:rtype: [str]
+"""
 
 def getKeywords(text: str) -> [str]:
   bitLogCoefficient: float = 1.0/math.log(2)
@@ -19,8 +30,6 @@ def getKeywords(text: str) -> [str]:
           if cooccuranceProportion!=0:
             sumProb-=cooccuranceProportion*math.log(cooccuranceProportion)*bitLogCoefficient;
     unrefinedWordEntropies[word1] = sumProb
-    #print(word1+" "+str(sumProb)+" "+str(getAssociationMap.removePunctuation(text).lower().count(" "+word1+" ")))
-  
 
   refinedWordEntropies: {str : float} = clusterTokens(text, unrefinedWordEntropies)
   refinedWordEntropies = clusterTokens(text, refinedWordEntropies)
@@ -30,7 +39,6 @@ def getKeywords(text: str) -> [str]:
   entropyThreshhold = 1000
   idxThreshhold = 0
 
-  print(refinedWordEntropies)
   while len(sortedWordsByEntropy)<len(refinedWordEntropies)-1:
     maxEntropy: float = 0
     maxEntropyToken: str = ""
@@ -50,6 +58,18 @@ def getKeywords(text: str) -> [str]:
     sortedWordsByEntropy.append(maxEntropyToken)
   return sortedWordsByEntropy
 
+"""
+clusterTokens
+
+coallesces a list of unrefinedWordEntropies into a list including original token entropies as well as significant n-grams
+
+:param text: the text to refine keywords from
+:type text: string
+:param unrefinedWordEntropies: the original dictionary of words and their entropies
+:type unrefinedWordEntropies: {str: int}
+:returns: the refined list of n-grams and their entropies
+:rtype: {str : int}
+"""
 def clusterTokens(text: str, unrefinedWordEntropies: {str : int}) -> {str : int}:
   refinedWordEntropies: {str: int} = {"__" : 0}
   cleanText: [str] = getAssociationMap.removePunctuation(text.lower()).split(" ")

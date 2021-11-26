@@ -1,22 +1,19 @@
 """
 getAssociationMap
 
+creates a map of how many times each notable token in a sentence cooccurs with each other notable token within the same sentence.
 
-
+:param text: the text to create the map from
+:type text: string
+:returns: the map of cooccurance counts for each token pair
+:rtype: {str: {str : int}}
 """
-
 def getAssociationMap(text: str) -> {str : {str : int}}:
   text = text.lower()
   returnMap: {str: {str: int}} = {"__" : {"__" : 0}}
-  print("text:")
-  print(text)
   vocabulary: [str] = list(set(removePunctuation(text).split(" ")))
   vocabulary = removeFunctionWords(vocabulary)
-  print("vocabulary:")
-  print(vocabulary)
   sentences: [str] = periodReplace(text).split(".")
-  print("sentences:")
-  print(sentences)
 
   for word1 in vocabulary:
     returnMap[word1] = {"__" : 0}
@@ -34,14 +31,35 @@ def getAssociationMap(text: str) -> {str : {str : int}}:
           pass
 
   return returnMap
-      
-def removeFunctionWords(vocabulary: [str]) -> str:
+
+
+"""
+removeFunctionWords
+
+removes function words from a list of strings
+
+:param vocabulary: list of strings to remove function words from
+:type vocabulary: [str]
+:returns: list of strings with function words removed
+:rtype: [str]
+"""
+def removeFunctionWords(vocabulary: [str]) -> [str]:
   functionWords: [str] = ["it", "and", "a", "because", "digits", "if", "even", "too", "be", "is", "there", "in", "of", "you", "to", "I", "me","could", "so", "then", "that", "this", "the", "than","by","for","only","an","therefore","will","from","has","with","but","are","also","at","yet","was","on","our","my","me","can","as","around","its"]
   for functionWord in functionWords:
     if functionWord in vocabulary:
       vocabulary.remove(functionWord)  
   return vocabulary
 
+"""
+removePunctuation
+
+removes puntuation from a text
+
+:param text: the text to remove punctuation from
+:type text: string
+:returns: the cleaned text
+:rtype: string
+"""
 def removePunctuation(text: str) -> str:
   retString: str = str(text)
   disallowedCharacters: str = ".?!,_'()“”"
@@ -49,6 +67,17 @@ def removePunctuation(text: str) -> str:
     retString = retString.replace(character,"")
   return retString
 
+
+"""
+periodReplace
+
+replaces all end stops ("?","!") with periods
+
+:param text: the text to change end stops in
+:type text: string
+:returns: the cleaned text
+:rtype: string
+"""
 def periodReplace(text: str) -> str:
   charsToPeriods: str = "?!"
   for character in charsToPeriods:
