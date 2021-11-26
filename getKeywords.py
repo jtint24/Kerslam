@@ -1,6 +1,6 @@
 import math #to use logarithms
 import AssociationMap #to use the associationMap class
-import getAssociationMap #to use the punctuation cleaning funciton
+import stringUtils #to use the punctuation cleaning funciton
 
 """
 getKeywords
@@ -17,9 +17,9 @@ def getKeywords(text: str) -> [str]:
   bitLogCoefficient: float = 1.0/math.log(2)
   textMap: AssociationMap = AssociationMap.AssociationMap(text);
 
-  functionWords: [str] = ["it", "and", "a", "because", "digits", "if", "even", "too", "be", "is", "there", "in", "of", "you", "to", "I", "me","could", "so", "then", "that", "this", "the", "than","by","for","only","an","therefore","will","from","has","with","but","are","also","at","yet","was","on","our","my","me","can","as","around","its"]
-
   unrefinedWordEntropies: {str : float} = {"__" : 0}
+
+  functionWords: str = stringUtils.functionWords()
 
   for word1 in textMap.vocabulary:
     sumProb: float = 0;
@@ -72,7 +72,7 @@ coallesces a list of unrefinedWordEntropies into a list including original token
 """
 def clusterTokens(text: str, unrefinedWordEntropies: {str : int}) -> {str : int}:
   refinedWordEntropies: {str: int} = {"__" : 0}
-  cleanText: [str] = getAssociationMap.removePunctuation(text.lower()).split(" ")
+  cleanText: [str] = stringUtils.removePunctuation(text.lower()).split(" ")
   for word in unrefinedWordEntropies:
     refinedWordEntropies[word] = unrefinedWordEntropies[word]
   for targetWord in unrefinedWordEntropies:
@@ -97,7 +97,7 @@ def clusterTokens(text: str, unrefinedWordEntropies: {str : int}) -> {str : int}
           try:
             refinedWordEntropies[targetWord+" "+followingWord] = unrefinedWordEntropies[followingWord]+unrefinedWordEntropies[targetWord]
           except:
-            refinedWordEntropies[targetWord+" "+followingWord] = unrefinedWordEntropies[targetWord]
+            pass
           try:
             if followingWords[followingWord] > .75*float(sumFollowing):
               refinedWordEntropies.pop(targetWord)

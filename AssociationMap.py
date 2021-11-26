@@ -1,4 +1,5 @@
 import getAssociationMap #to convert Strings into Association map dictionaries
+import stringUtils
 
 """
 AssociationMap
@@ -8,10 +9,8 @@ holds information about associations between words in texts
 
 class AssociationMap:
   def __init__(self, text: str):
-    print("AssociationMap: text:")
-    print(text)
     self.aMap: {str : {str : int}} = getAssociationMap.getAssociationMap(text)
-    self.vocabulary: [str] = list(set(getAssociationMap.removePunctuation(text.lower()).split(" ")))
+    self.vocabulary: [str] = list(set(stringUtils.removePunctuation(text.lower()).split(" ")))
     self.vocabulary = getAssociationMap.removeFunctionWords(self.vocabulary)
 
   """
