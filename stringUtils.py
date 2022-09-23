@@ -33,4 +33,4 @@ def periodReplace(text: str) -> str:
   return text
 
 def functionWords() -> [str]:
-  return ["it", "and", "a", "because", "digits", "if", "even", "too", "be", "is", "there", "in", "of", "you", "to", "I", "me","could", "so", "then", "that", "this", "the", "than","by","for","only","an","therefore","will","from","has","with","but","are","also","at","yet","was","on","our","my","me","can","as","around","its"]
+  return ["it", "and", "a", "because", "digits", "if", "even", "too", "be", "is", "there", "in", "of", "you", "to", "I", "me","could", "so", "then", "that", "this", "the", "than","by","for","only","an","therefore","will","from","has","with","but","are","also","at","yet","was","on","our","my","me","can","as","around","its","up","do","don't", "their", "her", "each", "which", "or", "all", "after", "more", "how", "when", "what"]
